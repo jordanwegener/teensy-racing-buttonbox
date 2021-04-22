@@ -9,7 +9,7 @@ Encoder rotary4(11, 12);
 
 long rot1pos, rot2pos, rot3pos, rot4pos;
 long rot1, rot2, rot3, rot4;
-const int rot_delay = 17;
+const int rot_delay = 250;
 
 void setup()
 {
