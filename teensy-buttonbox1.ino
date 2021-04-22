@@ -7,19 +7,15 @@ Encoder rotary2(5, 6);
 Encoder rotary3(8, 9);
 Encoder rotary4(11, 12);
 
+long rot1pos, rot2pos, rot3pos, rot4pos;
+long rot1, rot2, rot3, rot4;
+const int rot_delay = 17;
+
 void setup()
 {
-  pinMode(2, INPUT_PULLUP);
-  pinMode(3, INPUT_PULLUP);
   pinMode(4, INPUT_PULLUP);
-  pinMode(5, INPUT_PULLUP);
-  pinMode(6, INPUT_PULLUP);
   pinMode(7, INPUT_PULLUP);
-  pinMode(8, INPUT_PULLUP);
-  pinMode(9, INPUT_PULLUP);
   pinMode(10, INPUT_PULLUP);
-  pinMode(11, INPUT_PULLUP);
-  pinMode(12, INPUT_PULLUP);
   pinMode(13, INPUT_PULLUP);
   pinMode(14, INPUT_PULLUP);
   pinMode(15, INPUT_PULLUP);
@@ -31,6 +27,11 @@ void setup()
   rotary2.write(0);
   rotary3.write(0);
   rotary4.write(0);
+
+  rot1pos = 0;
+  rot2pos = 0;
+  rot3pos = 0;
+  rot4pos = 0;
 
   Joystick.useManualSend(true);
 }
@@ -53,80 +54,108 @@ void loop()
   Joystick.button(17, !digitalRead(13));
 
   // rotary encoder rotation
-  long rot1, rot2, rot3, rot4;
 
   rot1 = rotary1.read();
-  if (rot1 >= 4)
+  rot2 = rotary2.read();
+  rot3 = rotary3.read();
+  rot4 = rotary4.read();
+
+  // rotary 1
+  if (rot1 <= -2)
   {
     Joystick.button(6, true);
     Joystick.button(7, false);
+    rotary1.write(rot1 + 2);
+    Serial.println("Click up");
+    Joystick.send_now();
+    delay(rot_delay);
   }
-  else if (rot1 <= -4)
+  else if (rot1 >= 2)
   {
     Joystick.button(6, false);
     Joystick.button(7, true);
+    rotary1.write(rot1 - 2);
+    Serial.println("Click down");
+    Joystick.send_now();
+    delay(rot_delay);
   }
   else
   {
     Joystick.button(6, false);
     Joystick.button(7, false);
+    Joystick.send_now();
   }
 
-  rot2 = rotary2.read();
-  if (rot2 >= 4)
+     // rotary 2
+     if (rot2 < 0)
   {
     Joystick.button(9, true);
     Joystick.button(10, false);
+    rotary2.write(0);
+    Joystick.send_now();
+    delay(rot_delay);
   }
-  else if (rot1 <= 4)
+  else if (rot2 > 0)
   {
     Joystick.button(9, false);
     Joystick.button(10, true);
+    rotary2.write(0);
+    Joystick.send_now();
+    delay(rot_delay);
   }
   else
   {
     Joystick.button(9, false);
     Joystick.button(10, false);
+    Joystick.send_now();
   }
 
-  rot3 = rotary3.read();
-  if (rot3 >= 4)
+  // rotary 3
+  if (rot3 > 0)
   {
     Joystick.button(12, true);
     Joystick.button(13, false);
+    rotary3.write(0);
+    Joystick.send_now();
+    delay(rot_delay);
   }
-  else if (rot3 <= 4)
+  else if (rot3 < 0)
   {
     Joystick.button(12, false);
     Joystick.button(13, true);
+    rotary3.write(0);
+    Joystick.send_now();
+    delay(rot_delay);
   }
   else
   {
     Joystick.button(12, false);
     Joystick.button(13, false);
+    Joystick.send_now();
   }
 
-  rot4 = rotary4.read();
-  if (rot4 >= 4)
+  // rotary 4
+  if (rot4 > 0)
   {
     Joystick.button(15, true);
     Joystick.button(16, false);
+    rotary4.write(0);
+    Joystick.send_now();
+    delay(rot_delay);
   }
-  else if (rot4 <= 4)
+  else if (rot4 < 0)
   {
     Joystick.button(15, false);
     Joystick.button(16, true);
+    rotary4.write(0);
+    delay(rot_delay);
   }
   else
   {
     Joystick.button(15, false);
     Joystick.button(16, false);
+    Joystick.send_now();
   }
-
-  rotary1.write(0);
-  rotary2.write(0);
-  rotary3.write(0);
-  rotary4.write(0);
 
   Joystick.send_now();
 }
