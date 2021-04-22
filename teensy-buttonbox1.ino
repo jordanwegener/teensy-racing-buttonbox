@@ -2,6 +2,11 @@
 
 #include <Encoder.h>
 
+Encoder rotary1(2, 3);
+Encoder rotary2(5, 6);
+Encoder rotary3(8, 9);
+Encoder rotary4(11, 12);
+
 void setup()
 {
   pinMode(2, INPUT_PULLUP);
@@ -21,14 +26,13 @@ void setup()
   pinMode(20, INPUT_PULLUP);
   pinMode(21, INPUT_PULLUP);
   pinMode(22, INPUT_PULLUP);
-  Encoder rotary1(2, 3);
-  Encoder rotary2(5, 6);
-  Encoder rotary3(8, 9);
-  Encoder rotary4(11, 12);
+
   rotary1.write(0);
   rotary2.write(0);
   rotary3.write(0);
   rotary4.write(0);
+
+  Joystick.useManualSend(true);
 }
 
 void loop()
@@ -52,59 +56,71 @@ void loop()
   long rot1, rot2, rot3, rot4;
 
   rot1 = rotary1.read();
-  if (rot1 < 0)
-    {
-      Joystick.button(6, true);
-    }
-  else if (rot1 > 0)
-    {
-      Joystick.button(7, true);
-    }
+  if (rot1 >= 4)
+  {
+    Joystick.button(6, true);
+    Joystick.button(7, false);
+  }
+  else if (rot1 <= -4)
+  {
+    Joystick.button(6, false);
+    Joystick.button(7, true);
+  }
   else
   {
- 
+    Joystick.button(6, false);
+    Joystick.button(7, false);
   }
 
   rot2 = rotary2.read();
-  if (rot2 < 0)
-    {
-      Joystick.button(9, true);
-    }
-  else if (rot1 > 0)
-    {
-      Joystick.button(10, true);
-    }
+  if (rot2 >= 4)
+  {
+    Joystick.button(9, true);
+    Joystick.button(10, false);
+  }
+  else if (rot1 <= 4)
+  {
+    Joystick.button(9, false);
+    Joystick.button(10, true);
+  }
   else
   {
-
+    Joystick.button(9, false);
+    Joystick.button(10, false);
   }
 
   rot3 = rotary3.read();
-  if (rot3 < 0)
-    {
-      Joystick.button(12, true);
-    }
-  else if (rot3 > 0)
-    {
-      Joystick.button(13, true);
-    }
+  if (rot3 >= 4)
+  {
+    Joystick.button(12, true);
+    Joystick.button(13, false);
+  }
+  else if (rot3 <= 4)
+  {
+    Joystick.button(12, false);
+    Joystick.button(13, true);
+  }
   else
   {
-
+    Joystick.button(12, false);
+    Joystick.button(13, false);
   }
 
   rot4 = rotary4.read();
-  if (rot4 < 0)
-    {
-      Joystick.button(15, true);
-    }
-  else if (rot4 > 0)
-    {
-      Joystick.button(16, true);
-    }
+  if (rot4 >= 4)
+  {
+    Joystick.button(15, true);
+    Joystick.button(16, false);
+  }
+  else if (rot4 <= 4)
+  {
+    Joystick.button(15, false);
+    Joystick.button(16, true);
+  }
   else
   {
-
+    Joystick.button(15, false);
+    Joystick.button(16, false);
   }
 
   rotary1.write(0);
@@ -112,12 +128,5 @@ void loop()
   rotary3.write(0);
   rotary4.write(0);
 
-  Joystick.button(6, false);
-  Joystick.button(7, false);
-  Joystick.button(9, false);
-  Joystick.button(10, false);
-  Joystick.button(12, false);
-  Joystick.button(13, false);
-  Joystick.button(15, false);
-  Joystick.button(16, false);
+  Joystick.send_now();
 }
